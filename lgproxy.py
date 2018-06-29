@@ -26,6 +26,7 @@ from logging.handlers import TimedRotatingFileHandler
 from logging import FileHandler
 import subprocess
 from urllib import unquote
+from netaddr import IPAddress, IPNetwork
 
 from bird import BirdSocket
 
@@ -50,8 +51,10 @@ def access_log_after(response, *args, **kwargs):
     return response
 
 def check_accesslist():
-    if  app.config["ACCESS_LIST"] and request.remote_addr not in app.config["ACCESS_LIST"]:
-        abort(401)
+    for network in app.config["ACCESS_LIST"]:
+        if  app.config["ACCESS_LIST"] and IPAddress(request.remote_addr) not in IPNetwork(network):
+            return
+    abort(401)
 
 @app.route("/traceroute")
 @app.route("/traceroute6")
