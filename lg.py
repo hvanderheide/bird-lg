@@ -44,9 +44,10 @@ app.config.from_pyfile('lg.cfg')
 app.secret_key = app.config["SESSION_KEY"]
 app.debug = app.config["DEBUG"]
 
-file_handler = TimedRotatingFileHandler(filename=app.config["LOG_FILE"], when="midnight")
-file_handler.setLevel(getattr(logging, app.config["LOG_LEVEL"].upper()))
-app.logger.addHandler(file_handler)
+if app.config["LOG_FILE"]:
+    file_handler = TimedRotatingFileHandler(filename=app.config["LOG_FILE"], when="midnight")
+    file_handler.setLevel(getattr(logging, app.config["LOG_LEVEL"].upper()))
+    app.logger.addHandler(file_handler)
 
 memcache_server = app.config.get("MEMCACHE_SERVER", "127.0.0.1:11211")
 memcache_expiration = int(app.config.get("MEMCACHE_EXPIRATION", "1296000")) # 15 days by default

@@ -35,9 +35,10 @@ app = Flask(__name__)
 app.debug = app.config["DEBUG"]
 app.config.from_pyfile('lgproxy.cfg')
 
-file_handler = TimedRotatingFileHandler(filename=app.config["LOG_FILE"], when="midnight") 
+if app.config["LOG_FILE"]:
+    file_handler = TimedRotatingFileHandler(filename=app.config["LOG_FILE"], when="midnight")
+    app.logger.addHandler(file_handler)
 app.logger.setLevel(getattr(logging, app.config["LOG_LEVEL"].upper()))
-app.logger.addHandler(file_handler)
 
 @app.before_request
 def access_log_before(*args, **kwargs):
