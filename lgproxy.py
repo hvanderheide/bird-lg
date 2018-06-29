@@ -52,7 +52,7 @@ def access_log_after(response, *args, **kwargs):
 
 def check_accesslist():
     for network in app.config["ACCESS_LIST"]:
-        if  app.config["ACCESS_LIST"] and IPAddress(request.remote_addr) not in IPNetwork(network):
+        if  app.config["ACCESS_LIST"] and IPAddress(request.remote_addr) in IPNetwork(network):
             return
     abort(401)
 
