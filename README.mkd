@@ -39,6 +39,7 @@ bird-lg depends on :
  - python-dnspython
  - python-pydot
  - python-memcache
+ - python-netaddr
  - graphviz
  - whois
  - traceroute
